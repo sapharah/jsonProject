@@ -1,0 +1,58 @@
+<!doctype html>
+
+<html>
+	<head>
+		<title>JSON</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0">
+
+	</head>
+
+	<body>
+        <div id="container"> 
+            <h1>This is the JSON data</h1>
+            <a href="#" id="clickme">Get JSON Data</a>
+        </div>
+        
+        
+        
+        
+        
+        
+        
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        
+        <script>
+            $(function() {  
+              $('#clickme').click(function() {
+                   $.ajax({
+                   url: '//d10xkldqejj5hr.cloudfront.net/dev/dashboard.json',
+                   dataType: 'json',
+                   success: function(data) {
+                      var items = [];
+
+                      $.each(data, function(key, val) {
+
+                        items.push('<li id="' + key + '">' + val + '</li>');    
+
+                      });
+
+                      $('<ul/>', {
+                         'class': 'interest-list',
+                         html: items.join('')
+                      }).appendTo('body');
+
+                   },
+                  statusCode: {
+                     404: function() {
+                       alert('There was a problem with the server.  Try again soon!');
+                     }
+                   }
+                });
+              });
+            });
+        
+        
+        </script>
+	</body>
+</html>
