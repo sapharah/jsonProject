@@ -11,7 +11,8 @@
 	<body>
         <div id="container"> 
             <h1>This is the JSON data</h1>
-            <a href="#" id="clickme">Get JSON Data</a>
+            <button>Get JSON Data</button>
+            <div id="showData"></div>
         </div>
         
         
@@ -20,39 +21,21 @@
         
         
         
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
         
         <script>
-            $(function() {  
-              $('#clickme').click(function() {
-                   $.ajax({
-                   url: '//d10xkldqejj5hr.cloudfront.net/dev/dashboard.json',
-                   dataType: 'json',
-                   success: function(data) {
-                      var items = [];
-
-                      $.each(data, function(key, val) {
-
-                        items.push('<li id="' + key + '">' + val + '</li>');    
-
-                      });
-
-                      $('<ul/>', {
-                         'class': 'interest-list',
-                         html: items.join('')
-                      }).appendTo('body');
-
-                   },
-                  statusCode: {
-                     404: function() {
-                       alert('There was a problem with the server.  Try again soon!');
-                     }
-                   }
+            $(document).ready(function(){
+                $("button").click(function(){
+                    var data;
+                    $.getJSON("dashboard.json", function(result){
+                        $.each(result, function(i, field){
+                            data = JSON.stringify(field);
+                            var htmlTxt = data;
+                            $("#showData").append(htmlTxt + " ");
+                            });
                 });
-              });
             });
-        
-        
+            });
         </script>
 	</body>
 </html>
