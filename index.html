@@ -5,6 +5,8 @@
 		<title>JSON</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="style.css">
 
 	</head>
 
@@ -12,7 +14,9 @@
         <div id="container"> 
             <h1>This is the JSON data</h1>
             <button>Get JSON Data</button>
+            <pre>
             <div id="showData"></div>
+            </pre>
         </div>
         
         
@@ -22,20 +26,51 @@
         
         
         <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
         
         <script>
             $(document).ready(function(){
                 $("button").click(function(){
-                    var data;
+                    var htmlText = " ";
                     $.getJSON("dashboard.json", function(result){
-                        $.each(result, function(i, field){
-                            data = JSON.stringify(field);
-                            var htmlTxt = data;
-                            $("#showData").append(htmlTxt + " ");
+                        console.log(result.TitleRows);
+                        $.each(result.TitleRows, function(key, value){
+                            $.each(value.Titles, function(titleId, titleValue){
+                                //console.log("Index: " + titleId.Id + " Value: " + titleValue.Name);
+                                htmlText += '<div class="card text-center w-75 card-outline-secondary mb-3">';
+                                htmlText += '<h2 class="card-header">'  + titleValue.Name + '</h2>'
+                                htmlText+= '<img class="card-img-top img-responsive" src="http:' + titleValue.KeyArtUrl + '">';
+                                htmlText+= '<div class="card-body text-center">';
+                                //htmlText+= '<h4 class="card-title">' + titleValue.Name + '</h4>';
+                                //htmlText += '<br><p class="p-id"> Id: ' + titleValue.Id + '</p>';
+                                htmlText += '<p class="p-shortSynop card-text"> Short Synopsis: ' + titleValue.ShortSynopsis + '</p>';
+                                htmlText += '<p class="p-medSynop card-text"> Medium Synopsis: ' + titleValue.MediumSynopsis + '</p>';
+                                htmlText += '<p class="p-longSynop card-text"> Long Synopsis: ' + titleValue.LongSynopsis + '</p>';
+                                //htmlText += '<img src="http:' + titleValue.KeyArtUrl + '">';
+                                htmlText += '<img class="img-responsive" src="http:' + titleValue.MasterArtUrl + '">';
+                                htmlText += '<p class="p-Rating card-text"> Rating: ' + titleValue.Rating + '</p>';
+                                htmlText += '<p class="p-starRating card-text"> Star Rating: ' + titleValue.StarRating + '</p>';
+                                htmlText += '<p class="p-runTime card-text"> Run Time: ' + titleValue.RunTime + '</p>';
+                                htmlText += '<p class="p-episodes card-text"> Episodes: ' + titleValue.Episodes + '</p>';
+                                htmlText += '<p class="p-firstPremiereDate card-text"> First Premiere Date: ' + titleValue.FirstPremiereDate + '</p>';
+                                htmlText += '<p class="p-showInfoTitle card-text"> Show Info Title: ' + titleValue.ShowInfoTitle + '</p>';
+                                htmlText += '<p class="p-episodeCount card-text"> Episode Count: ' + titleValue.EpisodeCount + '</p>';
+                                htmlText += '<p class="p-seasonName card-text"> Season Name: ' + titleValue.SeasonName + '</p>';
+                                htmlText += '</div>';
+                                htmlText += '</div>';
+//                                $.each(titleValue, function(titleIndex, titleInfo){
+//                                    //console.log("Index: " + titleIndex[0].Id + " Info: " + titleInfo);
+//                                })
                             });
+                            data = JSON.stringify(value, null, 2);
+                            $("#showData").append(htmlText + " ");
+                        });
+                    });
                 });
             });
-            });
+            
+            
         </script>
 	</body>
 </html>
